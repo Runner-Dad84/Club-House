@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <h1>Public Message Board</h1>
+   <ul>
+  <% if (messages && messages.length > 0) { %>
+    
+      <% messages.forEach(msg => { %>
+        <li>Username: <%= msg.username %></li>
+        <li>Message: <%= msg.message %></li>
+        <li>Posted: <%= msg.created_at%></li>
+        <% }); %>
+      <%  } else { %> 
+        <span>No users</span>
+    <% } %>
+  </ul>
+
+  <% if (user) {%>
+    <h1>WELCOME BACK <%= user.username %></h1>
+    <a href="/log-out">LOG OUT</a>
+  <% } else { %>
+    <h1>please log in</h1>
+    <form action="/log-in" method="POST">
+      <label for="username">Username</label>
+      <input id="username" name="username" placeholder="username" type="text" required/>
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required/>
+      <button type="submit">Log In</button>
+    </form>
+  <%}%>
+  <a href="/newUser">Sign Up</a>
+</body>
+</html>

@@ -1,0 +1,129 @@
+const express = require('express');
+const app = express();
+const path = require("node:path");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require('passport-local').Strategy;
+const pool = require('./db/pool');
+const bcrypt = require("bcryptjs");
+const PORT = 3011;
+//require('dotenv').config();
+
+//routers
+const indexRouter = require("./routes/indexRouter");
+const newUserRouter = require("./routes/newUserRouter");
+
+//public assets
+const assetsPath = path.join(__dirname, "public");
+app.use(express.static(assetsPath));
+
+
+//session
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//parse form data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+//set veiw engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// use routers
+app.use("/", indexRouter);
+app.use("/", newUserRouter);
+
+//set as global
+app.use((req, res, next) => {
+  res.locals.user = req.user;  // makes user available in all views
+  next();
+});
+
+//authentication middleware
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const { rows } = await pool.query("SELECT * FROM members WHERE username = $1", [username]);
+      const member = rows[0];
+
+      if (!member) {
+        console.log(member, 'and error 1')
+        return done(null, false, { message: "Incorrect username" });
+        
+      }
+      if (member.password !== password) {
+        console.log(member, 'and error 2')
+        return done(null, false, { message: "Incorrect password" });
+      }
+      console.log(member, 'success!')
+      return done(null, member);
+    } catch(err) {
+      return done(err);
+    }
+  })
+);
+
+//set local variable
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
+passport.serializeUser((member, done) => {
+  done(null, member.member_id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const { rows } = await pool.query("SELECT * FROM members WHERE member_id = $1", [id]);
+    const member = rows[0];
+
+    done(null, member);
+  } catch(err) {
+    console.log(member, 'and error 3')
+    done(err);
+  }
+});
+
+app.post(
+  "/log-in",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/"
+  })
+);
+
+app.post("/sign-up", async (req, res, next) => {
+ try {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [req.body.username, hashedPassword]);
+  res.redirect("/");
+ } catch (error) {
+    console.error(error);
+    next(error);
+   }
+});
+
+app.get("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+
+app.get("/", (req, res) => {
+  console.log("req.user =", req.user);  // should log null or the logged-in user
+  res.render("index", { user: req.user });
+});
+
+console.log("App started") 
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
