@@ -19,10 +19,6 @@ async function addUser(first, last, username, password) {
 }
 
 
-
-
-
-
 //sign in user
 async function returnThisComment(id) {
   const { rows } = await pool.query('SELECT * FROM comments WHERE id=$1', [id]);

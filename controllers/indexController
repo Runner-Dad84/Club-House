@@ -1,4 +1,5 @@
 const db = require("../db/queries");
+const bcrypt = require("bcryptjs");
 
 
 //print all comment to board
@@ -16,7 +17,8 @@ async function getComments(req, res) {
 
 //add new user
 async function signupUser(req, res) {
-  const { first, last, username, password } = req.body;
+  const password = await bcrypt.hash(req.body.password, 10);
+  const { first, last, username } = req.body;
   console.log('success', first, last, username, password);
   try {
     await db.addUser(first, last, username, password);
@@ -26,7 +28,6 @@ async function signupUser(req, res) {
     console.error("DB error", error);
     res.status(500).send("Error Saving user.") }  
 }
-
 
 module.exports = {
     getComments,
