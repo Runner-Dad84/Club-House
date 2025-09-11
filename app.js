@@ -54,10 +54,12 @@ passport.use(
         return done(null, false, { message: "Incorrect username" });
         
       }
-      if (member.password !== password) {
-        console.log(member, 'and error 2')
-        return done(null, false, { message: "Incorrect password" });
+      const match = await bcrypt.compare(password, member.password);
+      if (!match) {
+      // passwords do not match!
+      return done(null, false, { message: "Incorrect password" })
       }
+
       console.log(member, 'success!')
       return done(null, member);
     } catch(err) {
