@@ -1,6 +1,6 @@
 const pool = require('./pool');
 
-//print all comments
+//print all comments (defuct)
 async function returnAllComments() {
   const { rows } = await pool.query("SELECT * FROM messages");
   return rows;
@@ -12,14 +12,27 @@ async function returnAllComments2 () {
   return rows;
 
 }
-//add new user
+//add new user (defunct)
 async function addUser(first, last, username, password) {
     const query = 'INSERT INTO members (first, last, username, password) VALUES ($1, $2, $3, $4)';
   await pool.query(query, [first, last, username, password]);
 }
 
+//add new user with status
+async function addUser2(first, last, username, password, userInput) {
+    pass_code = 'membercode';
+    const query = "INSERT INTO members (first, last, username, password, status) VALUES ($1, $2, $3, $4, CASE WHEN $5 = $6 THEN 'Member' ELSE 'Non-member' END)";
+    const values = [first, last, username, password, userInput, pass_code]
+  await pool.query(query, values);
+}
 
-//sign in user
+
+
+
+
+
+
+//NOt using yet below this line!
 async function returnThisComment(id) {
   const { rows } = await pool.query('SELECT * FROM comments WHERE id=$1', [id]);
   return rows[0];
@@ -33,7 +46,6 @@ async function addComment (comment, author) {
 
 
 module.exports = {
-  returnAllComments,
   returnAllComments2,
-  addUser,
+  addUser2,
 };
