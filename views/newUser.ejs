@@ -4,7 +4,7 @@
   
 <html>
     <body>
-        <h3>Sign Up</h3>
+        <h3>User Sign Up</h3>
         <form method="POST" action="/newUser"> 
             <label for="first">First Name</label>
             <input type="text" id="first" name="first" required>
@@ -12,12 +12,13 @@
             <input type="text" id="last" name="last" required>
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
-            <label for="password">User Password</label>
+            <label for="password">Password</label>
             <input type="text" id="password" name="password" required>
-            
-            <span>Enter the membership password to gain member status</span>
+            <label for="validatePassword">Confirm Password</label>
+            <input id="validatePassword" name="validatePassword" type="validatePassword" required/>
             <label for="userInput">Member Password</label>
             <input type="text" id="userInput" name="userInput">
+            <span>Enter the membership password to gain member status</span>
             
             <button type="submit">Submit</button>
       
