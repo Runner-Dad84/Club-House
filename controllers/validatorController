@@ -1,2 +1,11 @@
-const db = require("../db/queries");
+async function verifyPassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+        return res.redirect('/newUser');
+    }
+    next();
+}
 
+module.exports = {
+    verifyPassword,
+}
