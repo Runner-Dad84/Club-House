@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const newUserRouter = Router();
-const controller = require("../controllers/indexController");
 const controllerValidate = require("../controllers/validatorController");
+const controller = require("../controllers/indexController");
+
 
 //render sign up form
 newUserRouter.get("/newUser", (req, res) => { res.render("newUser") });

@@ -21,6 +21,11 @@
 
   <% if (user) {%>
     <h1>WELCOME BACK <%= user.username %></h1>
+    <form method="POST" action="/new">
+            <label for="co">Message</label>
+            <textarea id="message" name="message"  rows="2" cols="50" required></textarea> 
+            <button type="submit">Submit</button>
+
     <a href="/log-out">LOG OUT</a>
   <% } else { %>
     <h1>please log in</h1>
