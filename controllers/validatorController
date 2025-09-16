@@ -1,6 +1,6 @@
 async function verifyPassword(req, res, next) {
-    const { password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
+    const { password, validatePassword } = req.body;
+    if (password !== validatePassword) {
         return res.redirect('/newUser');
     }
     next();
