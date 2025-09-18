@@ -26,7 +26,11 @@ async function addUser2(first, last, username, password, userInput) {
   await pool.query(query, values);
 }
 
-
+//add comment
+async function insertMessage (message, msg_id) {
+  const query = 'INSERT INTO messages (message, msg_id) VALUES ($1, $2)';
+  await pool.query(query, [message, msg_id]);
+}
 
 
 
@@ -38,14 +42,11 @@ async function returnThisComment(id) {
   return rows[0];
 }
 
-//add comment
-async function addComment (comment, author) {
-    const query = 'INSERT INTO comments (comment, author) VALUES ($1, $2)';
-  await pool.query(query, [comment, author]);
-}
+
 
 
 module.exports = {
   returnAllComments2,
   addUser2,
+  insertMessage
 };

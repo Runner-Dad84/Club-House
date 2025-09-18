@@ -29,7 +29,23 @@ async function signupUser(req, res) {
     res.status(500).send("Error Saving user.") }  
 }
 
+//add new comment
+
+async function addMessage(req, res) {
+  const msg_id = req.user.member_id;
+ console.log("Logged-in user:", req.user);
+  const { message } = req.body;
+  try {
+    await db.insertMessage(message, msg_id);
+    console.log('New message posted.')
+    res.redirect("/");
+  } catch (error) {
+    console.log(message, msg_id)
+    res.status(500).send("Error adding comment.") } 
+}
+
 module.exports = {
     getComments,
     signupUser,
+    addMessage
 }
