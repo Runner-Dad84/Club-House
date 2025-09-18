@@ -7,6 +7,7 @@
 <body>
   <h1>Public Message Board</h1>
    <ul>
+   <% if (user) {%>
   <% if (messages && messages.length > 0) { %>
     
       <% messages.forEach(msg => { %>
@@ -18,6 +19,19 @@
         <span>No users</span>
     <% } %>
   </ul>
+   <%} else { %>
+    <% if (messages && messages.length > 0) { %>
+    
+      <% messages.forEach(msg => { %>
+        <li>Message: <%= msg.message %></li>
+        <li>Posted: <%= msg.created_at%></li>
+        <% }); %>
+      <%  } else { %> 
+        <span>No users</span>
+    <% } %>
+
+
+  <%}%>
 
   <% if (user) {%>
     <h1>WELCOME BACK <%= user.username %></h1>
@@ -25,7 +39,7 @@
             <label for="message">Message</label>
             <textarea id="message" name="message"  rows="3" cols="40" required></textarea> 
             <button type="submit">Submit</button>
-
+    </form>
     <a href="/log-out">LOG OUT</a>
   <% } else { %>
     <h1>please log in</h1>
