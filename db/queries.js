@@ -32,7 +32,11 @@ async function insertMessage (message, msg_id) {
   await pool.query(query, [message, msg_id]);
 }
 
-
+//delete comment
+async function deleteMessage (id) {
+  const query = 'DELETE FROM members WHERE id = $1';
+  await pool.query(query, [id]);
+}
 
 
 
