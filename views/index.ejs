@@ -14,7 +14,7 @@
         Username: <%= msg.username %><br>
         Message: <%= msg.message %><br>
         Posted: <%= msg.created_at %>
-        <button>Delete</button>
+        <button id="<%= msg.id %>">Delete</button>
       <% } else if (user && !user.admin) { %>
         Username: <%= msg.username %><br>
         Message: <%= msg.message %><br>
