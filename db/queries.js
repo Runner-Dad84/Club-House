@@ -52,5 +52,6 @@ async function returnThisComment(id) {
 module.exports = {
   returnAllComments2,
   addUser2,
-  insertMessage
+  insertMessage,
+  deleteMessage
 };
