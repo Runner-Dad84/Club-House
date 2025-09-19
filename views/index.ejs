@@ -6,32 +6,30 @@
 </head>
 <body>
   <h1>Public Message Board</h1>
-   <ul>
-   <% if (user) {%>
-  <% if (messages && messages.length > 0) { %>
-    
-      <% messages.forEach(msg => { %>
-        <li>Username: <%= msg.username %></li>
-        <li>Message: <%= msg.message %></li>
-        <li>Posted: <%= msg.created_at%></li>
-        <% }); %>
-      <%  } else { %> 
-        <span>No users</span>
-    <% } %>
+<% if (messages && messages.length > 0) { %>
+  <ul>
+  <% messages.forEach(msg => { %>
+    <li>
+      <% if (user && user.admin) { %>
+        Username: <%= msg.username %><br>
+        Message: <%= msg.message %><br>
+        Posted: <%= msg.created_at %>
+        <button>Delete</button>
+      <% } else if (user && !user.admin) { %>
+        Username: <%= msg.username %><br>
+        Message: <%= msg.message %><br>
+        Posted: <%= msg.created_at %>
+      <% } else { %>
+        Message: <%= msg.message %><br>
+        Posted: <%= msg.created_at %>
+      <% } %>
+    </li>
+  <% }) %>
   </ul>
-   <%} else { %>
-    <% if (messages && messages.length > 0) { %>
-    
-      <% messages.forEach(msg => { %>
-        <li>Message: <%= msg.message %></li>
-        <li>Posted: <%= msg.created_at%></li>
-        <% }); %>
-      <%  } else { %> 
-        <span>No users</span>
-    <% } %>
+<% } else { %>
+  <span>No users</span>
+<% } %>
 
-
-  <%}%>
 
   <% if (user) {%>
     <h1>WELCOME BACK <%= user.username %></h1>

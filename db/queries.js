@@ -13,16 +13,16 @@ async function returnAllComments2 () {
 
 }
 //add new user (defunct)
-async function addUser(first, last, username, password) {
-    const query = 'INSERT INTO members (first, last, username, password) VALUES ($1, $2, $3, $4)';
+async function addUser(first, last, username, password, admin) {
+    const query = 'INSERT INTO members (first, last, username, password) VALUES ($1, $2, $3, $4, $5)';
   await pool.query(query, [first, last, username, password]);
 }
 
 //add new user with status
-async function addUser2(first, last, username, password, userInput) {
+async function addUser2(first, last, username, password, userInput, admin) {
     pass_code = 'membercode';
-    const query = "INSERT INTO members (first, last, username, password, status) VALUES ($1, $2, $3, $4, CASE WHEN $5 = $6 THEN 'Member' ELSE 'Non-member' END)";
-    const values = [first, last, username, password, userInput, pass_code]
+    const query = "INSERT INTO members (first, last, username, password, status) VALUES ($1, $2, $3, $4, CASE WHEN $5 = $6 THEN 'Member' ELSE 'Non-member', $7 END)";
+    const values = [first, last, username, password, userInput, pass_code, admin]
   await pool.query(query, values);
 }
 

@@ -18,10 +18,10 @@ async function getComments(req, res) {
 //add new user
 async function signupUser(req, res) {
   const password = await bcrypt.hash(req.body.password, 10);
-  const { first, last, username, userInput} = req.body;
-  console.log('success', first, last, username, password, userInput);
+  const { first, last, username, userInput, admin} = req.body;
+  console.log('success', first, last, username, password, userInput, admin);
   try {
-    await db.addUser2(first, last, username, password, userInput);
+    await db.addUser2(first, last, username, password, userInput, admin);
     console.log("Successfully inserted username into DB")
     res.redirect("/");
   } catch (error) {
